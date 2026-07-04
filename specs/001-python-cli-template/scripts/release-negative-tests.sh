@@ -50,7 +50,7 @@ make_repo s4
 seed_changelog "$WORK/s4" with
 cd "$WORK/s4"
 printf 'import os\n' > bad.py
-git add bad.py && git commit --quiet -m "test: introduce lint failure" && git push --quiet origin main
+git add bad.py && git commit --quiet -m "✅ test: introduce lint failure" && git push --quiet origin main
 uv sync --quiet
 out=$(just release 0.1.0 2>&1) && fail "S4: release should abort on failing check" || true
 echo "$out" | grep -Fq "'just check' failed" || fail "S4: message missing check cause: $out"

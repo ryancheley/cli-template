@@ -264,7 +264,8 @@ rollback-release version:
         echo "Deleted local tag v$v."
     fi
     if git log -1 --pretty=%s | grep -q "release: v$v"; then
-        git revert --no-edit HEAD
+        git revert --no-commit HEAD
+        git commit -m "⏪ revert: release v$v"
         git push --force-with-lease origin main
         echo "Reverted the bump commit and pushed."
     else

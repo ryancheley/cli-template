@@ -39,7 +39,7 @@ seed_changelog() {
             printf '# Changelog\n\n## [Unreleased]\n' > CHANGELOG.md
         fi
         git add CHANGELOG.md
-        git commit --quiet -m "docs: seed changelog for release test"
+        git commit --quiet -m "📝 docs: seed changelog for release test"
         git push --quiet origin main
     )
 }
