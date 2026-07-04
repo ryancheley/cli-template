@@ -16,6 +16,19 @@ install:
 install-hooks:
     prek install
 
+# --- init (removed by init) ---
+# Turn this template into your project (runs once, then removes itself)
+[group('setup')]
+init name author email github description title="":
+    #!/bin/sh
+    set -eu
+    if [ -n "{{ title }}" ]; then
+        uv run --no-project python scripts/init.py --name "{{ name }}" --author "{{ author }}" --email "{{ email }}" --github "{{ github }}" --description "{{ description }}" --title "{{ title }}"
+    else
+        uv run --no-project python scripts/init.py --name "{{ name }}" --author "{{ author }}" --email "{{ email }}" --github "{{ github }}" --description "{{ description }}"
+    fi
+# --- init (removed by init) ---
+
 # Lint with ruff
 [group('quality')]
 lint:
