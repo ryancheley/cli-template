@@ -19,13 +19,30 @@ install-hooks:
 # --- init (removed by init) ---
 # Turn this template into your project (runs once, then removes itself)
 [group('setup')]
-init name author email github description title="":
+[positional-arguments]
+init *ARGS:
     #!/bin/sh
     set -eu
-    if [ -n "{{ title }}" ]; then
-        uv run --no-project python scripts/init.py --name "{{ name }}" --author "{{ author }}" --email "{{ email }}" --github "{{ github }}" --description "{{ description }}" --title "{{ title }}"
+    name="" author="" email="" github="" description="" title=""
+    for kv in "$@"; do
+        case "$kv" in
+            name=*) name=${kv#*=} ;;
+            author=*) author=${kv#*=} ;;
+            email=*) email=${kv#*=} ;;
+            github=*) github=${kv#*=} ;;
+            description=*) description=${kv#*=} ;;
+            title=*) title=${kv#*=} ;;
+            *) echo "Unknown argument: $kv (keys: name, author, email, github, description, title)" >&2; exit 2 ;;
+        esac
+    done
+    if [ -z "$name" ] || [ -z "$author" ] || [ -z "$email" ] || [ -z "$github" ] || [ -z "$description" ]; then
+        echo 'Usage: just init name=<kebab-name> author="Full Name" email=<email> github=<owner[/repo]> description="..." [title="..."]' >&2
+        exit 2
+    fi
+    if [ -n "$title" ]; then
+        uv run --no-project python scripts/init.py --name "$name" --author "$author" --email "$email" --github "$github" --description "$description" --title "$title"
     else
-        uv run --no-project python scripts/init.py --name "{{ name }}" --author "{{ author }}" --email "{{ email }}" --github "{{ github }}" --description "{{ description }}"
+        uv run --no-project python scripts/init.py --name "$name" --author "$author" --email "$email" --github "$github" --description "$description"
     fi
 # --- init (removed by init) ---
 
