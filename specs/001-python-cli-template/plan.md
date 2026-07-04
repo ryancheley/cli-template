@@ -159,6 +159,18 @@ no-failing-gates rule and the user's branch discipline.
   `just release 0.1.0` is a valid increment under `release-check`; the
   CHANGELOG still carries the `[0.1.0]` stub section the release pre-flight
   requires.
+- **A4 (2026-07-04, implementation drift record)**: (a) The `init` recipe
+  parses `key=value` pairs itself via `[positional-arguments]` + `*ARGS` —
+  just only honors variable overrides *before* the recipe name, so recipe
+  parameters could not deliver the mandated `just init name=…` shape.
+  (b) Validation scripts use portable `grep -riE`, not `rg` (rg is a
+  fish-only function on the reference machine; scripts run under sh).
+  (c) `release.yml` sets `enable-cache: false` on setup-uv — zizmor's
+  cache-poisoning audit (High) flags caching in publishing workflows; this is
+  the upstream remediation, not an ignore. (d) `rollback-release` writes an
+  explicit `⏪ revert:` commit message because git's default `Revert "…"`
+  message violates the emoji-first commit-msg hook active in this
+  environment. All four are recorded in CLAUDE.md/contracts where relevant.
 
 ## Complexity Tracking
 
