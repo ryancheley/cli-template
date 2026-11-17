@@ -76,7 +76,7 @@ jobs:
   # workflows or a locked pin no longer verifies upstream.
   lockfile:
     name: Verify actions lockfile
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     env:
